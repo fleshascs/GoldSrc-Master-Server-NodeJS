@@ -1,8 +1,9 @@
 # GoldSrc Master-Server with NodeJS
 
-## Compile into linux binary 
+## Compile into linux binary
 
 make sure to have a pkg installed
+
 ```sh
 npm install -g pkg
 ```
@@ -11,3 +12,12 @@ npm install -g pkg
 pkg -o ./bin/server -t linux server.js
 ```
 
+## How to use screen
+
+```shell script
+// Show running screens
+screen -ls
+
+// Restore screen session
+screen -r 10835
+```
