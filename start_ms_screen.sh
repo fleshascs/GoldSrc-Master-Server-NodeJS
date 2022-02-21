@@ -1,1 +1,1 @@
-screen -A -m -d -S ms_nodejs ./bin/server
+screen -A -m -d -S ms_nodejs ./server

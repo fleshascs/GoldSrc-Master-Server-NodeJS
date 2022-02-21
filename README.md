@@ -1,6 +1,6 @@
-# GoldSrc Master-Server with NodeJS
+# GoldSrc Master-Server on NodeJS
 
-## Compile into linux binary
+## Compile into linux executable
 
 make sure to have a pkg installed
 
@@ -9,23 +9,15 @@ npm install -g pkg
 ```
 
 ```shell script
-pkg -o ./bin/server -t linux server.js
+npm run build
 
+npx pkg -t linux ./build/src/server.js
 ```
 
-## How to use screen
+## Run with docker
 
 ```shell script
+docker build -t master_server .
 
-// start master server
-./start_ms_screen.sh
-
-// Show running screens
-screen -ls
-
-// Restore screen session
-screen -r 10835
-
-// exit screen session
-ctrl + a + d
+docker run -e PORT=27011 -p 27011:27011/udp -v "C:\Users\RYZEN\Desktop\workplace\GoldSrc-Master-Server-NodeJS\logs":/usr/app/logs --name ms master_server:latest
 ```
