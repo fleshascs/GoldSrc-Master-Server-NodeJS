@@ -17,7 +17,6 @@ npx pkg -t linux ./build/src/server.js
 ## Run with docker
 
 ```shell script
-docker build -t master_server .
-
-docker run -e PORT=27011 -p 27011:27011/udp -v "C:\Users\RYZEN\Desktop\workplace\GoldSrc-Master-Server-NodeJS\logs":/usr/app/logs --name ms master_server:latest
+docker build -t fleshas/nodejs-master-server .
+docker run -d -e PORT=27011 -p 27011:27011/udp  -v "/home/debian/ms/config.json5":/usr/app/config.json5 -v "/home/debian/ms/logs":/usr/app/logs --name ms fleshas/nodejs-master-server:latest
 ```
