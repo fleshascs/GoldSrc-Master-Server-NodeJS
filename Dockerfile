@@ -9,7 +9,7 @@ RUN npx pkg -o ./server -t node16-alpine-x64 ./build/src/server.js
 
 FROM alpine:3.15
 WORKDIR /usr/app
-
+ENV TZ="Europe/Vilnius"
 COPY --from=BUILD_IMAGE /usr/app/server ./
 COPY --from=BUILD_IMAGE /usr/app/config.json5 ./
 
