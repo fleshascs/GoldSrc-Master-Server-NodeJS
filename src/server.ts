@@ -1,70 +1,19 @@
-import fs from 'fs';
-import udp from 'dgram';
-import logger from './logger';
-import JSON5 from 'json5';
-const config = JSON5.parse(fs.readFileSync('./config.json5', { encoding: 'utf8', flag: 'r' }));
+import { createPackages } from './createPackages';
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 27011;
-console.log('config', config);
+const servers: string[] = [
+  '91.211.246.1:27015',
+  '91.211.246.2:27015',
+  '91.211.246.3:27015',
 
-const RESPONSE_START = Buffer.from([0xff, 0xff, 0xff, 0xff, 0x66, 0x0a]);
-const RESPONSE_END = Buffer.from([0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+  '91.211.246.4:27015',
+  '91.211.246.5:27015',
+  '91.211.246.6:27015',
 
-process.on('uncaughtException', function (err) {
-  logger.logError(err.toString());
-  console.log('Caught exception: ' + err);
-});
+  '91.211.246.7:27015',
+  '91.211.246.8:27015',
+  '91.211.246.9:27015',
 
-const ServerToBytes = (server: string) => {
-  const parts = server.split(':');
-  const ip = parts[0];
-  const port = Number(parts[1]);
-  return [
-    ...ip.split('.').map((section) => Number(section).toString(10)),
-    (port >> 8) & 0xff,
-    port & 0xff
-  ];
-};
+  '91.211.246.10:27015'
+];
 
-const server = udp.createSocket('udp4');
-
-server.on('error', function (error) {
-  logger.logError(error.toString());
-  console.log('Error: ' + error);
-});
-
-server.on('message', function (msg, info) {
-  if (msg.compare(Buffer.from([0x31]), 0, 1, 0, 1) !== 0) return;
-  logger.logConn(info.address, info.port);
-  console.log('Data received from client : ' + msg.toString());
-  console.log('Received %d bytes from %s:%d\n', msg.length, info.address, info.port);
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const serverListBytes = config.serverscs.map((s: string) => Buffer.from(ServerToBytes(s)));
-
-  const pkg = Buffer.concat([RESPONSE_START, ...serverListBytes, RESPONSE_END]);
-
-  server.send(pkg, info.port, info.address, function (error) {
-    if (error) {
-      logger.logError(error.toString());
-      console.log('error while sending:', error);
-    } else {
-      console.log('Master-Server server list sent to:' + info.address);
-    }
-  });
-});
-
-server.on('listening', function () {
-  const address = server.address();
-  logger.log('Server is listening at port:' + address.port);
-  console.log('Server is listening at port:' + address.port);
-  console.log('Listed servers:', config.serverscs.length);
-});
-
-server.on('close', function () {
-  logger.logError('Socket is closed');
-  console.log('Socket is closed !');
-});
-
-server.bind(PORT);
+console.log('packages', JSON.stringify(createPackages(servers)));
