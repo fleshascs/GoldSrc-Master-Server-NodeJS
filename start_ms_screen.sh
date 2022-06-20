@@ -1,1 +1,1 @@
-screen -A -m -d -S ms_nodejs ./server
+PORT=27010 screen -A -m -d -S ms_nodejs ./server
