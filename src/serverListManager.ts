@@ -24,8 +24,10 @@ interface Servers {
   top50servers: Server[];
 }
 
+const API_URL = process.env.API_URL ? process.env.API_URL : 'https://cs-boost.lt';
+
 async function getServerListChunks() {
-  const servers: Servers = await fetch('https://cs-boost.lt/api/servers.php?full=1').then((res) =>
+  const servers: Servers = await fetch(API_URL + '/api/servers.php?full=1').then((res) =>
     res.json()
   );
   const ips: Server['address'][] = servers.boostedServers.map((s) => s.address);
